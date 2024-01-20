@@ -46,9 +46,9 @@ exports.getTickets = async(req,res) => {
         const tickets = await Ticket.find().lean();
         // console.log(typeof(tickets));
         for (const ticket of tickets) {
-            const agent = await Agent.findById(ticket.assignedTo); // Assuming you have an Agent model
+            const agent = await Agent.findById(ticket.assignedTo);
             if (agent) {
-              ticket.agentName = agent.name; // Attach agent's name to the ticket
+              ticket.agentName = agent.name;
             }
         }
         res.json(tickets);

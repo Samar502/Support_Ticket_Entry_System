@@ -4,13 +4,12 @@ const agentSchema = mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Please add a name'],
-        // required: true
     },
     email: {
         type: String,
         required: [true, 'Please add an email'],
         // required: true,
-        // unique: true,
+        unique: true,
     },
     phone: {
         type: String,

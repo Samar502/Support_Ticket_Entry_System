@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
-import './AddTicket.css';
+import './Components.css';
 
 const Agent = () => {
     const [formData, setFormData] = useState({
@@ -49,7 +49,6 @@ const Agent = () => {
       e.preventDefault();
   
       if (validateForm()) {
-        // Handle form submission here (e.g., send data to the server)
         const payload = JSON.stringify(formData);
         axios.post('http://localhost:5000/api/support-agents', payload, {
             headers: {
@@ -59,7 +58,6 @@ const Agent = () => {
         .then((response) => {
             console.log(response);
         })
-        // console.log(formData);
         setSubmitted(true);
       }
     };
@@ -84,9 +82,12 @@ const Agent = () => {
         <h2 className='heading'>Support Agent</h2>
         
         {submitted ? (
-        //   <p className='success-submit'>Form submitted successfully!</p>
         <div className='success-submit'>
+            {errors ? (
+                <p className='failed-submit'>Failed to add agent, Try again with checking details properly!</p>
+            ) : (
         <p>Support Agent added successfully!</p>
+            )}
         <button onClick={handleNew}> Create a new agent</button>
     </div>
         ) : (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './AddTicket.css';
+import './Components.css';
 
 const AddTicket = () => {
   const [formData, setFormData] = useState({
@@ -8,19 +8,15 @@ const AddTicket = () => {
     description: '',
     severity: 'Low',
     type: ''
-    // status: 'New',
   });
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Validate the form data
     const validationErrors = validateForm(formData);
+
     if (Object.keys(validationErrors).length === 0) {
-      // Form data is valid, handle submission (e.g., send to the backend)
-    //   console.log('Form data:', formData);
       const payload = JSON.stringify(formData);
       axios.post('http://localhost:5000/api/support-tickets', payload, {
         headers: {
@@ -29,23 +25,12 @@ const AddTicket = () => {
       })
       .then((response) => {
         console.log(response);
-      // Reset the form
-      // setFormData({
-      //   title: '',
-      //   description: '',
-      //   severity: 'Low',
-      //   type: ''
-      //   // status: 'New',
-      //   // assignedTo: '',
-      //   // createdOn: '',
-      // });
     })
     .catch((err) => {
         console.log('Error sending data to the backend', err);
     });
     setSubmitted(true);
     } else {
-      // Form data has validation errors, update errors state
       setErrors(validationErrors);
     }
   };
@@ -53,11 +38,9 @@ const AddTicket = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    // Clear validation error when the user changes the field
     setErrors({ ...errors, [name]: '' });
   };
 
-  // Validation function
   const validateForm = (data) => {
     const errors = {};
 
@@ -73,16 +56,6 @@ const AddTicket = () => {
         errors.type = 'Type is required';
     }
 
-    // if (!data.assignedTo.trim()) {
-    //   errors.assignedTo = 'Assigned To is required';
-    // }
-
-    // if (!data.createdOn.trim()) {
-    //   errors.createdOn = 'Created On date is required';
-    // } else if (!isValidDate(data.createdOn)) {
-    //   errors.createdOn = 'Invalid date format (YYYY-MM-DD)';
-    // }
-
     return errors;
   };
 
@@ -93,25 +66,18 @@ const AddTicket = () => {
       description: '',
       severity: 'Low',
       type: ''
-      // status: 'New',
-      // assignedTo: '',
-      // createdOn: '',
       });
     }
-
-  // Function to validate date format (YYYY-MM-DD)
-//   const isValidDate = (dateString) => {
-//     const pattern = /^\d{4}-\d{2}-\d{2}$/;
-//     return pattern.test(dateString);
-//   };
 
   return (
     <div>
       <h2 className='heading'>Support Ticket</h2>
       {submitted ? (
-        //   <p className='success-submit'>Form submitted successfully!</p>
         <div className='success-submit'>
-        <p>Support Ticket added successfully!</p>
+          {errors ? ( <p className='failed-submit'>Failed to add agent, Try again with checking details properly!</p>
+        ) : (
+          <p>Support Ticket added successfully!</p>
+              )}
         <button onClick={handleNew}> Create a new ticket</button>
     </div>
         ) : (
@@ -153,19 +119,6 @@ const AddTicket = () => {
             <option value="High">High</option>
           </select>
         </div>
-        {/* <div>
-          <label htmlFor="status">Type</label>
-          <select
-            id="status"
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-          >
-            <option value="New">New</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Resolved">Resolved</option>
-          </select> */}
-        {/* </div> */}
         <div className='form-group'>
           <label htmlFor="type" className='label-description'>Type</label>
           <input
@@ -178,18 +131,6 @@ const AddTicket = () => {
           />
           {errors.type && <div className="error">{errors.type}</div>}
         </div>
-        {/* <div>
-          <label htmlFor="createdOn">Created On</label>
-          <input
-            type="text"
-            id="createdOn"
-            name="createdOn"
-            placeholder="YYYY-MM-DD"
-            value={formData.createdOn}
-            onChange={handleChange}
-          />
-          {errors.createdOn && <div className="error">{errors.createdOn}</div>}
-        </div> */}
         <button type="submit" className='submit-button'>Create Ticket</button>
       </form> 
       )}</div>
