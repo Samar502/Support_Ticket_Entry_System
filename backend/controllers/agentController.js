@@ -3,6 +3,7 @@ const Ticket = require('../models/Ticket');
 
 // Add an agent
 exports.addAgent = async (req, res) => {
+    // console.log('Here');
     try{
         const unassignedTickets = await Ticket.find({assignedTo: null});
 

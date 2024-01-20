@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const Agent = require('./models/Agent');
 const Ticket = require('./models/Ticket');
 const exp = require('constants');
+const cors = require('cors');
 const agentRoute = require('./routes/agentRoute');
 const ticketRoute = require('./routes/ticketRoute');
 
@@ -20,7 +21,7 @@ const dbURI = 'mongodb+srv://samar:test12345@cluster0.mtrahda.mongodb.net/?retry
 mongoose.connect(dbURI, { 
     useNewUrlParser : true, 
     useUnifiedTopology : true
-    }).then((result) => app.listen(3000))
+    }).then((result) => app.listen(5000))
     .catch((err) => console.log(err));
 
 // app.post('/api/support-agents', async (req,res) => {
@@ -67,8 +68,17 @@ mongoose.connect(dbURI, {
 //         })
 //     }
 // })
+const corsOptions = {
+    origin: 'http://localhost:3000', // Allow requests from the frontend server
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Enable credentials (if needed)
+};
+
+app.use(cors(corsOptions));
 
 app.use('/api/support-agents', agentRoute);
+
+app.use('/api/support-tickets', ticketRoute);
 
 app.use('/api/support-tickets', ticketRoute);
 
